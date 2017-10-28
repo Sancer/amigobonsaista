@@ -118,13 +118,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "bonsai",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "bonsai",
       "kebab-case"
     ],
     "use-input-property-decorator": true,

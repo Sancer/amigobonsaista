@@ -1,0 +1,6 @@
+<bonsai-loading [loading]="loading"></bonsai-loading>
+<div class="container" *ngIf="loading">
+  <div class="row">  
+    <bonsai-thumb *ngFor="let bonsai of bonsais" [bonsai]=bonsai ></bonsai-thumb>
+  </div>
+</div>

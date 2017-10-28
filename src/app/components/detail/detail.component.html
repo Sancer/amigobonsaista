@@ -1,0 +1,32 @@
+<bonsai-loading [loading]="loading"></bonsai-loading>
+<div class="container" *ngIf="!loading">
+  <div class="row">
+    <div class="col s6">
+      <div class="card">
+        <div class="card-image">
+          <img src="{{ bonsai.image }}" *ngIf="bonsai.image">
+          <img src="assets/img/logo.png" *ngIf="!bonsai.image">   
+        </div>
+      </div>
+    </div>
+    <div class="col s6">
+      <h2>{{ bonsai.name }}</h2>
+      <p> Descripción o nota del bonsaista</p>
+      <p>Junipero - Itokawa</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs" materialize="tabs">
+        <li class="tab col s6">
+          <a href="#galery" class="active">Galería</a>
+        </li>
+        <li class="tab col s6">
+          <a href="#history">Histotial</a>
+        </li>
+      </ul>
+    </div>
+    <div id="galery" class="col s12">Galería</div>
+    <div id="history" class="col s12">Historial</div>
+  </div>
+</div>
