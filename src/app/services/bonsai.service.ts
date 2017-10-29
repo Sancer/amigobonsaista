@@ -1,11 +1,11 @@
-import { log } from 'util';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireList } from 'angularfire2/database/interfaces';
+
 import { Bonsai } from '../models/bonsai.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { AngularFireDatabase } from 'angularfire2/database';
 
 
 @Injectable()

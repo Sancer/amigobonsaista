@@ -1,3 +1,5 @@
+import { FormsModule } from '@angular/forms';
+import { AuthModule } from './modules/auth/auth.module';
 import { environment } from '../environments/environment';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
@@ -39,7 +41,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     AngularFireDatabaseModule,
     AngularFireModule.initializeApp(environment.firebase),
     BrowserModule,
-    RouterModule.forRoot(Routes)
+    RouterModule.forRoot(Routes),
+    AuthModule
   ],
   providers: [
     BonsaiService
