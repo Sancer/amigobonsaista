@@ -12,6 +12,7 @@ import { Subject } from 'rxjs/Subject';
 export class AuthService {
   private usersCollection: AngularFireList<any>;
   private usersCollectionName = 'users';
+  private currentUser: User;
   private user = new Subject<User>();
 
   constructor(
@@ -21,7 +22,6 @@ export class AuthService {
   ) {
     this.usersCollection = db.list(this.usersCollectionName);
 
-    this.user.next(new User());
     if (this.isAuthenticated()) {
       this.getUserDataBase(this.getCurrentUserUid()).subscribe(
         user => {
@@ -30,14 +30,17 @@ export class AuthService {
         error => { console.warn('error: ', error); }
       );
     }
+
+    this.user.asObservable().subscribe(
+      user => { this.currentUser = user; }
+    );
   }
 
   signup(user: User) {
-    this.user.next(user);
     this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
-      .then(
-        data => {
-          if (data.uid) {
+    .then(
+      data => {
+        if (data.uid) {
             user.id = data.uid;
             this.setUser(user);
           }
@@ -82,6 +85,11 @@ export class AuthService {
   }
 
   getUser(): Observable<User> {
+    setTimeout(() => {
+      if (this.currentUser) {
+        this.user.next(this.currentUser);
+      }
+    }, 0);
     return this.user.asObservable();
   }
 
@@ -95,10 +103,17 @@ export class AuthService {
     }
   }
 
+  public updateUser(user: User) {
+    const secureDataUser = this.secureUserData(user);
+    const userRef = this.db.object(`${this.usersCollectionName}/${user.id}`);
+    return userRef.update(secureDataUser);
+  }
+
   private setUser(user: User) {
     const secureDataUser = this.secureUserData(user);
     this.usersCollection.set(user.id, secureDataUser);
   }
+
 
   private singinToken(token: string) {
     this.afAuth.auth.signInWithCustomToken(token)

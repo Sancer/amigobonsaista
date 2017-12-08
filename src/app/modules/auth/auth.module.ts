@@ -6,16 +6,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { AppModule } from '../../app.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule.forChild(Routes)
+    RouterModule.forChild(Routes),
   ],
   declarations: [
     SigninComponent,
-    SignupComponent
+    SignupComponent,
+    ProfileComponent
   ],
   providers: [
     AuthService

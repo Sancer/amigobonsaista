@@ -10,6 +10,7 @@ import { AuthService } from '../../modules/auth/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   user: User;
+  private loading = true;
   constructor(
     private authService: AuthService
   ) { }
@@ -20,7 +21,7 @@ export class HeaderComponent implements OnInit {
 
   private getUser(): void {
     this.authService.getUser().subscribe(
-      user => { this.user = user; },
+      user => { this.user = user, this.loading = false; },
       error => { console.warn('error: getUser', error); }
     );
   }

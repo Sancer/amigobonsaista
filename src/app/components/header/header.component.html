@@ -5,12 +5,14 @@
       <li routerLinkActive="active">
         <a routerLink="/list" >Galería</a>
       </li>
-      <li *ngIf="user">
-        <a href="#">Perfil</a>
-      </li>
-      <li *ngIf="!user">
-        <a routerLink="login">Login</a>        
-      </li>
+      <ng-container *ngIf="!loading">
+        <li *ngIf="user" routerLinkActive="active">
+          <a routerLink="/profile">Perfil</a>
+        </li>
+        <li *ngIf="!user" routerLinkActive="active">
+          <a routerLink="/login">Login</a>        
+        </li>
+      </ng-container>
     </ul>
   </div>
 </nav>

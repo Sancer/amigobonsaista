@@ -1,0 +1,35 @@
+<div class="container" *ngIf="!loading">
+  <div class="row">
+      <form class="col s12 m8 offset-m2" #profileForm="ngForm" (ngSubmit)="onSubmit(profileForm)" novalidate>
+          <div class="card-panel">
+            <div class="row">
+              <div class="input-field col s6">
+                <input name="name" [(ngModel)]="user.name" id="first_name" type="text" class="validate" required>
+                <label for="first_name" class="active">Nombre</label>
+              </div>
+              <div class="input-field col s6">
+                <input name="lastName" [(ngModel)]="user.lastName" id="last_name" type="text" class="validate" required>
+                <label for="last_name" class="active">Apellidos</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 center-align">
+                <button class="btn btn-large btn-register waves-effect waves-light" type="submit" name="action">
+                  Guardar
+                  <i class="material-icons right" *ngIf="!saving && !(success || fail)">send</i>
+                  <i class="material-icons right" *ngIf="!saving && success">done</i>
+                  <i class="material-icons right" *ngIf="!saving && fail">error_outline</i>
+                  <i class="material-icons right" *ngIf="saving">access_time</i>
+                </button>
+              </div>
+            </div>
+          </div>
+      </form> 
+  </div>
+</div>
+
+<div class="container" *ngIf="loading">
+  <div class="row">  
+    Loading...
+  </div>
+</div>
