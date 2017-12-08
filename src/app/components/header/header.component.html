@@ -7,8 +7,18 @@
       </li>
       <ng-container *ngIf="!loading">
         <li *ngIf="user" routerLinkActive="active">
-          <a routerLink="/profile">Perfil</a>
+          <a materialize="dropdown" data-activates='dropdown-profile'>{{ user.name }}</a>
+          <ul id='dropdown-profile' class='dropdown-content'>
+              <li>
+                <a routerLink="/profile">Perfil</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a routerLink="/logout">Salir</a>
+              </li>
+            </ul>
         </li>
+
         <li *ngIf="!user" routerLinkActive="active">
           <a routerLink="/login">Login</a>        
         </li>

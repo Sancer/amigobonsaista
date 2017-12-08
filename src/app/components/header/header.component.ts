@@ -20,10 +20,14 @@ export class HeaderComponent implements OnInit {
   }
 
   private getUser(): void {
-    this.authService.getUser().subscribe(
-      user => { this.user = user, this.loading = false; },
-      error => { console.warn('error: getUser', error); }
-    );
+    if (this.authService.isAuthenticated()) {
+      this.authService.getUser().subscribe(
+        user => { this.user = user, this.loading = false; },
+        error => { console.warn('error: getUser', error); }
+      );
+    } else {
+      this.loading = false;
+    }
   }
 
 }

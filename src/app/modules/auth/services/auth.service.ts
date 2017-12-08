@@ -77,11 +77,9 @@ export class AuthService {
   }
 
   singout() {
-    this.afAuth.auth.signOut().then(function() {
-      localStorage.removeItem('isLoggedIn');
-    }).catch(function(error) {
-      // An error happened.
-    });
+    localStorage.removeItem('isLoggedIn');
+    this.user.next(undefined);
+    return this.afAuth.auth.signOut();
   }
 
   getUser(): Observable<User> {
