@@ -4,26 +4,43 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireList } from 'angularfire2/database/interfaces';
 
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class AuthService {
-  usersCollection: AngularFireList<any>;
-  usersCollectionName = 'users';
+  private usersCollection: AngularFireList<any>;
+  private usersCollectionName = 'users';
+  private user = new Subject<User>();
 
   constructor(
     private afAuth: AngularFireAuth,
-    private db: AngularFireDatabase
+    private db: AngularFireDatabase,
+    private router: Router
   ) {
     this.usersCollection = db.list(this.usersCollectionName);
+
+    this.user.next(new User());
+    if (this.isAuthenticated()) {
+      this.getUserDataBase(this.getCurrentUserUid()).subscribe(
+        user => {
+          this.user.next(user);
+        },
+        error => { console.warn('error: ', error); }
+      );
+    }
   }
 
   signup(user: User) {
+    this.user.next(user);
     this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
       .then(
         data => {
-          console.log(data);
-          user.id = data.uid;
-          this.setUser(user);
+          if (data.uid) {
+            user.id = data.uid;
+            this.setUser(user);
+          }
         },
         error => {
           console.log(error);
@@ -34,11 +51,18 @@ export class AuthService {
       });
   }
 
-  signin(email: string, password: string) {
+  signin(email: string, password: string): void {
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then(
         data => {
-          return data;
+          if (data.uid) {
+            this.getUserDataBase(data.uid).subscribe(
+              user => { this.user.next(user); },
+              error => { console.warn('error: ', error); }
+            );
+            localStorage.setItem('isLoggedIn', data.uid);
+            this.router.navigate(['/']);
+          }
         },
         error => {
           console.log(error);
@@ -51,16 +75,28 @@ export class AuthService {
 
   singout() {
     this.afAuth.auth.signOut().then(function() {
-      // Sign-out successful.
+      localStorage.removeItem('isLoggedIn');
     }).catch(function(error) {
       // An error happened.
     });
   }
 
+  getUser(): Observable<User> {
+    return this.user.asObservable();
+  }
+
+  isAuthenticated(): boolean {
+    return (localStorage.getItem('isLoggedIn')) ? true : false;
+  }
+
+  getCurrentUserUid() {
+    if (this.isAuthenticated()) {
+      return localStorage.getItem('isLoggedIn');
+    }
+  }
+
   private setUser(user: User) {
     const secureDataUser = this.secureUserData(user);
-    console.log(user);
-    console.log(secureDataUser);
     this.usersCollection.set(user.id, secureDataUser);
   }
 
@@ -81,6 +117,13 @@ export class AuthService {
         lastName: user.lastName,
         email: user.email,
     };
-}
+  }
+
+  private getUserDataBase(idUser): Observable<User> {
+    return this.db.object(`${this.usersCollectionName}/${idUser}`).snapshotChanges()
+      .map(data => { return { id: data.payload.key, ...data.payload.val() };
+      }
+    );
+  }
 
 }

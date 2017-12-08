@@ -1,7 +1,8 @@
-import { User } from '../../user.model';
-import { AuthService } from '../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../user.model';
 
 @Component({
   selector: 'bonsai-signup',
@@ -10,6 +11,7 @@ import { NgForm } from '@angular/forms';
 })
 export class SignupComponent implements OnInit {
   user: User;
+
   constructor(
     private authService: AuthService
   ) { }

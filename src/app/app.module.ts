@@ -23,6 +23,7 @@ import { DetailComponent } from './components/detail/detail.component';
 
 import { BonsaiService } from './services/bonsai.service';
 import { LoadingComponent } from './components/loading/loading.component';
+import { AuthService } from './modules/auth/services/auth.service';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     AuthModule
   ],
   providers: [
-    BonsaiService
+    BonsaiService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

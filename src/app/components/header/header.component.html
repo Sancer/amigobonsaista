@@ -5,6 +5,12 @@
       <li routerLinkActive="active">
         <a routerLink="/list" >Galería</a>
       </li>
+      <li *ngIf="user">
+        <a href="#">Perfil</a>
+      </li>
+      <li *ngIf="!user">
+        <a routerLink="login">Login</a>        
+      </li>
     </ul>
   </div>
 </nav>
